@@ -1,12 +1,17 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useLocation } from "react-router-dom";
+import { useSelector } from 'react-redux';
 import ApperIcon from "@/components/ApperIcon";
 import SearchBar from "@/components/molecules/SearchBar";
 import Avatar from "@/components/atoms/Avatar";
+import Button from "@/components/atoms/Button";
+import { AuthContext } from "../../App";
 
 const Header = ({ onMobileMenuToggle }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
+  const { logout } = useContext(AuthContext);
+  const { user } = useSelector((state) => state.user);
 
   const getPageTitle = () => {
     const pathMap = {
@@ -17,6 +22,12 @@ const Header = ({ onMobileMenuToggle }) => {
       "/reports": "Reports"
     };
     return pathMap[location.pathname] || "StaffHub";
+  };
+
+  const handleLogout = async () => {
+    if (window.confirm("Are you sure you want to log out?")) {
+      await logout();
+    }
   };
 
   return (
@@ -52,13 +63,26 @@ const Header = ({ onMobileMenuToggle }) => {
           </button>
           <div className="flex items-center space-x-3">
             <div className="text-right hidden sm:block">
-              <p className="text-sm font-medium text-gray-900">Admin User</p>
-              <p className="text-xs text-gray-600">HR Manager</p>
+              <p className="text-sm font-medium text-gray-900">
+                {user ? `${user.firstName} ${user.lastName}` : 'Admin User'}
+              </p>
+              <p className="text-xs text-gray-600">
+                {user?.accounts?.[0]?.companyName || 'HR Manager'}
+              </p>
             </div>
             <Avatar 
-              fallback="Admin User"
+              fallback={user ? `${user.firstName} ${user.lastName}` : 'Admin User'}
               size="md"
             />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleLogout}
+              className="ml-2"
+            >
+              <ApperIcon name="LogOut" className="w-4 h-4 mr-1" />
+              Logout
+            </Button>
           </div>
         </div>
       </div>

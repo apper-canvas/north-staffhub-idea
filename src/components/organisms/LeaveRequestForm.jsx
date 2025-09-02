@@ -45,9 +45,9 @@ const LeaveRequestForm = ({ onSubmit, onCancel }) => {
     setIsSubmitting(true);
 
     try {
-      const newRequest = {
-        Id: Date.now(), // Mock ID generation
+const newRequest = {
         employeeId: formData.employeeId,
+        employeeName: formData.employeeName || `Employee ${formData.employeeId}`,
         type: formData.type,
         startDate: formData.startDate,
         endDate: formData.endDate,

@@ -84,7 +84,7 @@ const EmployeeCard = ({ employee, onEdit, onDelete, onViewProfile }) => {
         
         <div className="flex items-center justify-between">
           <span className="text-sm text-gray-600">Employee ID:</span>
-          <span className="text-sm font-mono text-gray-900">{employee.id}</span>
+<span className="text-sm font-mono text-gray-900">{employee.Id}</span>
         </div>
       </div>
 
